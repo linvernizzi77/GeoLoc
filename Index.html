@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000; min-height: 14.0px}
+    span.s1 {font-kerning: none}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
+<p class="p1"><span class="s1">&lt;html lang="it"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;head&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;Acquisizione Posizione GPS e Trasferimento su Ninox&lt;/title&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;body&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;h1&gt;Acquisizione Posizione GPS e Trasferimento su Ninox&lt;/h1&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;p&gt;Premi il pulsante qui sotto per acquisire la tua posizione GPS e trasferirla a Ninox:&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;button id="getLocation"&gt;Ottieni Posizione GPS&lt;/button&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;h2&gt;Posizione Attuale:&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;p id="location"&gt;Nessuna posizione disponibile.&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Funzione per ottenere la posizione GPS</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function getLocation() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (navigator.geolocation) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>navigator.geolocation.getCurrentPosition(showPosition, showError);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} else {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.getElementById("location").innerHTML = "Geolocalizzazione non supportata dal browser.";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Funzione per mostrare la posizione</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function showPosition(position) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>var latitude = position.coords.latitude;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>var longitude = position.coords.longitude;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById("location").innerHTML = "Latitudine: " + latitude + "&lt;br&gt;Longitudine: " + longitude;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Trasferisci la posizione a Ninox</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>sendToNinox(latitude, longitude);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Funzione per gestire gli errori</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function showError(error) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>switch(error.code) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>case error.PERMISSION_DENIED:</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>document.getElementById("location").innerHTML = "Permesso negato per ottenere la posizione.";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>break;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>case error.POSITION_UNAVAILABLE:</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>document.getElementById("location").innerHTML = "Posizione non disponibile.";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>break;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>case error.TIMEOUT:</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>document.getElementById("location").innerHTML = "Tempo di attesa scaduto per ottenere la posizione.";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>break;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>case error.UNKNOWN_ERROR:</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>document.getElementById("location").innerHTML = "Errore sconosciuto durante l'acquisizione della posizione.";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>break;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Funzione per inviare i dati a Ninox</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function sendToNinox(latitude, longitude) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Sostituisci con l'endpoint dell'API di Ninox e la tua API Key</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const apiUrl = https://effetre.ninoxdb.com/#/teams/7bvSZXEyzhnuBgL3q/database/ughyi6xy9h99; // Modifica con l'endpoint corretto</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const apiKey = 8a46a100-03d4-11f0-ae07-3928b357d52c;<span class="Apple-converted-space">  </span>// Sostituisci con la tua chiave API</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Dati da inviare (modifica con i campi effettivi di Ninox)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const data = {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>"latitudine": latitude,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>"longitudine": longitude</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Invia i dati a Ninox tramite una richiesta POST</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>fetch(apiUrl, {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>method: 'POST',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>headers: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>'Content-Type': 'application/json',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>'Authorization': 'Bearer ' + apiKey</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>body: JSON.stringify(data)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>})</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>.then(response =&gt; response.json())</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>.then(data =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>console.log('Dati inviati a Ninox:', data);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.getElementById("location").innerHTML += "&lt;br&gt;Posizione inviata con successo a Ninox!";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>})</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>.catch(error =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>console.error('Errore nell\'invio a Ninox:', error);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.getElementById("location").innerHTML += "&lt;br&gt;Errore nell'invio a Ninox.";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Aggiungi l'evento al pulsante</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById("getLocation").addEventListener("click", getLocation);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+</body>
+</html>
